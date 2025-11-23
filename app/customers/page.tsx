@@ -1,14 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { AddCustomerSheet } from "@/components/add-customer-sheet";
 import { db, Customer } from "@/lib/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
-import { CustomerForm } from "./customer-form";
 
 export default function CustomersPage() {
   const customers = useLiveQuery(() => db.customers.toArray());
@@ -31,14 +27,13 @@ export default function CustomersPage() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Customers</h1>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setSelectedCustomer(undefined)}>
-              Add Customer
-            </Button>
-          </DialogTrigger>
-          <CustomerForm customer={selectedCustomer} onSave={handleSave} />
-        </Dialog>
+        <AddCustomerSheet
+          trigger={<Button>Add Customer</Button>}
+          customer={selectedCustomer}
+          onSave={handleSave}
+          open={open}
+          onOpenChange={setOpen}
+        />
       </div>
       <div className="border rounded-md">
         <div className="grid grid-cols-4 font-bold p-2 border-b">

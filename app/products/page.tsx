@@ -1,14 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { AddProductSheet } from "@/components/add-product-sheet";
 import { db, Product } from "@/lib/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
-import { ProductForm } from "./product-form";
 
 export default function ProductsPage() {
   const products = useLiveQuery(() => db.products.toArray());
@@ -31,14 +27,13 @@ export default function ProductsPage() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Products</h1>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setSelectedProduct(undefined)}>
-              Add Product
-            </Button>
-          </DialogTrigger>
-          <ProductForm product={selectedProduct} onSave={handleSave} />
-        </Dialog>
+        <AddProductSheet
+          trigger={<Button>Add Product</Button>}
+          product={selectedProduct}
+          onSave={handleSave}
+          open={open}
+          onOpenChange={setOpen}
+        />
       </div>
       <div className="border rounded-md">
         <div className="grid grid-cols-4 font-bold p-2 border-b">
